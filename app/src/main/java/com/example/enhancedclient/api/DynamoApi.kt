@@ -37,15 +37,14 @@ class DynamoApi : Activity() {
                 Region.AP_NORTHEAST_1
             ).credentialsProvider(
                 StaticCredentialsProvider.create(
-                    AwsBasicCredentials.create(
-                        BuildConfig.accessKeyId, BuildConfig.secretAccessKey
-                    )
+                    AwsBasicCredentials.create(BuildConfig.accessKeyId, BuildConfig.secretAccessKey)
                 )
             ).build()
         ).build()
 
     //テーブルインスタンス作成
-    private var userTable: DynamoDbAsyncTable<User> = enhancedClient.table("LoginAppUser", userSchema)
+    private var userTable: DynamoDbAsyncTable<User> =
+        enhancedClient.table("LoginAppUser", userSchema)
 
     // 条件に合うユーザーが登録されているか確認
     fun getDoesExistUser(userId: String, pass: String): Boolean {
@@ -57,9 +56,7 @@ class DynamoApi : Activity() {
         val subscriber = UserSubscriber()
         pagePublisher.subscribe(subscriber)
         val userList: MutableList<User> = ArrayList()
-        pagePublisher.items().subscribe { e: User ->
-            userList.add(e)
-        }.exceptionally { null }.join()
+        pagePublisher.items().subscribe { e: User -> userList.add(e) }.exceptionally { null }.join()
         return userList.isNotEmpty()
     }
 }
