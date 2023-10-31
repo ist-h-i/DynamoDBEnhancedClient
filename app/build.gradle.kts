@@ -24,7 +24,6 @@ android {
         }
         buildConfigField("String", "accessKeyId", "\"${project.properties["accessKeyId"]}\"")
         buildConfigField("String", "secretAccessKey", "\"${project.properties["secretAccessKey"]}\"")
-        buildConfigField("String", "identityPoolId", "\"${project.properties["identityPoolId"]}\"")
     }
 
     buildTypes {
