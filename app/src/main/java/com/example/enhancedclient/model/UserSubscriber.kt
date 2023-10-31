@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.stream.Collectors
 
 class UserSubscriber: Subscriber<Page<User>> {
+    // 読み込み完了まで待機するためのLatch
     private val latch = CountDownLatch(1)
     private val itemsFromAllPages: List<User> = ArrayList()
     private var subscription: Subscription? = null
@@ -16,6 +17,7 @@ class UserSubscriber: Subscriber<Page<User>> {
         subscription = sub
         subscription!!.request(1L)
         try {
+            // 待機開始
             latch.await()
         } catch (e: InterruptedException) {
             throw RuntimeException(e)
@@ -36,6 +38,7 @@ class UserSubscriber: Subscriber<Page<User>> {
     override fun onError(throwable: Throwable?) {}
 
     override fun onComplete() {
+        // 待機完了
         latch.countDown()
     }
 

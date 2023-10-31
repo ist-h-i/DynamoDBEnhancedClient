@@ -18,6 +18,7 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 
 class DynamoApi : Activity() {
+    // スキーマ作成
     private val userSchema: TableSchema<User> =
         TableSchema.builder(User::class.java).newItemSupplier { User() }
             .addAttribute(String::class.java) { a ->
@@ -29,6 +30,7 @@ class DynamoApi : Activity() {
                     .tags(StaticAttributeTags.primarySortKey())
             }.build()
 
+    // クライアント作成
     private var enhancedClient: DynamoDbEnhancedAsyncClient =
         DynamoDbEnhancedAsyncClient.builder().dynamoDbClient(
             DynamoDbAsyncClient.builder().region(
@@ -42,8 +44,10 @@ class DynamoApi : Activity() {
             ).build()
         ).build()
 
-    private var userTable: DynamoDbAsyncTable<User> = enhancedClient.table("EasyGroup", userSchema)
+    //テーブルインスタンス作成
+    private var userTable: DynamoDbAsyncTable<User> = enhancedClient.table("LoginAppUser", userSchema)
 
+    // 条件に合うユーザーが登録されているか確認
     fun getDoesExistUser(userId: String, pass: String): Boolean {
         val keyEqual = QueryConditional.keyEqualTo { b: Key.Builder ->
             b.partitionValue(userId).sortValue(pass)

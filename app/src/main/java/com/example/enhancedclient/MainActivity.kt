@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
             // 外部通信のためスレッド生成
             val queryDynamoDb = Thread {
                 try {
-                    // Query結果
                     val dynamoApi = DynamoApi()
+                    // Query結果
                     val userRecord = dynamoApi.getDoesExistUser(userId, password)
                     if (userRecord) {
                         // User情報が登録済みの場合
